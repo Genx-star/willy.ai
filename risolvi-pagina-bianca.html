@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risoluzione Pagina Bianca - WILLY.AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #6B00B3;
+        }
+        h1 {
+            border-bottom: 2px solid #6B00B3;
+            padding-bottom: 10px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .error-card {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+        }
+        .solution-card {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+        }
+        .step-card {
+            background-color: #f5f5f5;
+            border-left: 4px solid #6B00B3;
+        }
+        button {
+            background-color: #6B00B3;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #4A0080;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        #console-output {
+            background-color: #212121;
+            color: #ffffff;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .success {
+            color: #4caf50;
+        }
+        .warning {
+            color: #ff9800;
+        }
+        .error {
+            color: #f44336;
+        }
+        .hidden {
+            display: none;
+        }
+        .step {
+            margin-bottom: 30px;
+        }
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #6B00B3;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Risoluzione Problema Pagina Bianca - WILLY.AI</h1>
+    
+    <div class="card">
+        <h2>Diagnosi Automatica</h2>
+        <p>Questo strumento ti aiuterà a identificare e risolvere il problema della pagina bianca nell'applicazione WILLY.AI.</p>
+        <button id="run-diagnostics">Esegui Diagnosi Automatica</button>
+        <div id="console-output" class="hidden"></div>
+    </div>
+    
+    <div class="card error-card">
+        <h2>Cause Comuni</h2>
+        <p>Una pagina bianca in un'applicazione React può essere causata da:</p>
+        <ul>
+            <li><strong>Errori JavaScript</strong> che interrompono il rendering</li>
+            <li><strong>Problemi con React o ReactDOM</strong> non caricati correttamente</li>
+            <li><strong>Errori nei componenti</strong> che causano crash durante il rendering</li>
+            <li><strong>Problemi con gli store Zustand</strong> che causano errori durante l'inizializzazione</li>
+            <li><strong>Errori di sintassi</strong> in file JSX/TSX importanti</li>
+            <li><strong>Problemi con le dipendenze</strong> mancanti o incompatibili</li>
+        </ul>
+    </div>
+    
+    <div class="step">
+        <h2><span class="step-number">1</span> Verifica la Console del Browser</h2>
+        <div class="card step-card">
+            <p>Il primo passo fondamentale è controllare la console del browser per vedere gli errori:</p>
+            <ol>
+                <li>Apri l'applicazione nel browser</li>
+                <li>Premi <code>F12</code> o fai clic destro → <code>Ispeziona</code></li>
+                <li>Vai alla scheda <code>Console</code></li>
+                <li>Cerca messaggi di errore in rosso</li>
+            </ol>
+            <p>Annota qualsiasi errore che vedi per riferimento futuro.</p>
+        </div>
+    </div>
+    
+    <div class="step">
+        <h2><span class="step-number">2</span> Verifica il File index.html</h2>
+        <div class="card step-card">
+            <p>Assicurati che il file index.html contenga l'elemento root necessario:</p>
+            <pre><code>&lt;!-- Dovrebbe essere presente nel file index.html --&gt;
+&lt;div id="root"&gt;&lt;/div&gt;</code></pre>
+            <p>Se questo elemento è mancante, React non avrà un punto di montaggio per l'applicazione.</p>
+        </div>
+    </div>
+    
+    <div class="step">
+        <h2><span class="step-number">3</span> Usa il File main-debug.tsx</h2>
+        <div class="card step-card">
+            <p>È stato creato un file speciale <code>main-debug.tsx</code> con gestione degli errori avanzata:</p>
+            <ol>
+                <li>Rinomina temporaneamente <code>src/main.tsx</code> in <code>src/main.tsx.bak</code></li>
+                <li>Rinomina <code>src/main-debug.tsx</code> in <code>src/main.tsx</code></li>
+                <li>Riavvia il server di sviluppo con <code>npm run dev</code></li>
+            </ol>
+            <p>Questo file mostrerà messaggi di errore dettagliati invece di una pagina bianca.</p>
+        </div>
+    </div>
+    
+    <div class="step">
+        <h2><span class="step-number">4</span> Verifica gli Store Zustand</h2>
+        <div class="card step-card">
+            <p>I problemi con gli store Zustand possono causare pagine bianche. Modifica temporaneamente <code>App.tsx</code> per isolare il problema:</p>
+            <pre><code>// Modifica App.tsx per testare senza Zustand
+import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
+import { BrowserRouter } from 'react-router-dom';
+// Commenta la linea seguente
+// import { useThemeStore } from './stores/themeStore';
+import AppRoutes from './routes';
+import Layout from './components/Layout';
+
+// Crea un tema di fallback
+const fallbackTheme = createTheme();
+
+function App() {
+  // Commenta questa linea
+  // const { theme } = useThemeStore();
+  
+  // Usa il tema di fallback
+  const theme = fallbackTheme;
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <BrowserRouter>
+        <Layout>
+          <AppRoutes />
+        </Layout>
+      </BrowserRouter>
+    </ThemeProvider>
+  );
+}
+
+export default App;</code></pre>
+        </div>
+    </div>
+    
+    <div class="step">
+        <h2><span class="step-number">5</span> Verifica i Componenti Lazy</h2>
+        <div class="card step-card">
+            <p>I componenti caricati in modo lazy possono causare problemi. Modifica temporaneamente <code>routes/index.tsx</code> per testare con un componente semplice:</p>
+            <pre><code>import { Routes, Route } from 'react-router-dom';
+
+// Componente di test semplice
+const TestComponent = () => (
+  &lt;div style={{ padding: '20px' }}&gt;
+    &lt;h1&gt;Test Component&lt;/h1&gt;
+    &lt;p&gt;Se vedi questo messaggio, il problema è nei componenti delle pagine.&lt;/p&gt;
+  &lt;/div&gt;
+);
+
+const AppRoutes = () => {
+  return (
+    &lt;Routes&gt;
+      &lt;Route path="/" element={&lt;TestComponent /&gt;} /&gt;
+      &lt;Route path="*" element={&lt;TestComponent /&gt;} /&gt;
+    &lt;/Routes&gt;
+  );
+};
+
+export default AppRoutes;</code></pre>
+        </div>
+    </div>
+    
+    <div class="card solution-card">
+        <h2>Soluzioni Rapide</h2>
+        
+        <h3>1. Reinstalla le Dipendenze</h3>
+        <p>Spesso i problemi di pagina bianca sono causati da dipendenze mancanti o danneggiate:</p>
+        <pre><code># Esegui questi comandi nel terminale
+npm cache clean --force
+rm -rf node_modules
+rm -rf package-lock.json
+npm install</code></pre>
+        
+        <h3>2. Cancella la Cache del Browser</h3>
+        <p>La cache del browser può causare problemi con le applicazioni React:</p>
+        <ul>
+            <li>Chrome: Premi <code>Ctrl+Shift+Del</code> → Seleziona "Cache" → Cancella dati</li>
+            <li>Firefox: Premi <code>Ctrl+Shift+Del</code> → Seleziona "Cache" → Cancella ora</li>
+            <li>Edge: Premi <code>Ctrl+Shift+Del</code> → Seleziona "Cache immagini e file" → Cancella</li>
+        </ul>
+        
+        <h3>3. Verifica la Versione di Node.js</h3>
+        <p>Assicurati di utilizzare una versione di Node.js compatibile con il progetto:</p>
+        <pre><code>node -v</code></pre>
+        <p>Se la versione è troppo vecchia o troppo nuova, considera l'utilizzo di nvm per installare una versione compatibile.</p>
+    </div>
+    
+    <script>
+        // Script di diagnostica
+        document.getElementById('run-diagnostics').addEventListener('click', function() {
+            const consoleOutput = document.getElementById('console-output');
+            consoleOutput.classList.remove('hidden');
+            consoleOutput.innerHTML = '';
+            
+            // Funzione per aggiungere output alla console
+            function log(message, type = 'info') {
+                const line = document.createElement('div');
+                line.className = type;
+                line.textContent = message;
+                consoleOutput.appendChild(line);
+                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+            }
+            
+            log('Avvio diagnostica...', 'info');
+            
+            // Verifica se React è definito globalmente
+            setTimeout(() => {
+                log('Verifica React...', 'info');
+                try {
+                    if (typeof React === 'undefined') {
+                        log('ERRORE: React non è definito globalmente. Questo è normale se stai eseguendo questa diagnostica fuori dall\'applicazione.', 'error');
+                    } else {
+                        log('React è definito globalmente.', 'success');
+                    }
+                } catch (e) {
+                    log('ERRORE: ' + e.message, 'error');
+                }
+                
+                // Verifica se ReactDOM è definito globalmente
+                log('Verifica ReactDOM...', 'info');
+                try {
+                    if (typeof ReactDOM === 'undefined') {
+                        log('ERRORE: ReactDOM non è definito globalmente. Questo è normale se stai eseguendo questa diagnostica fuori dall\'applicazione.', 'error');
+                    } else {
+                        log('ReactDOM è definito globalmente.', 'success');
+                    }
+                } catch (e) {
+                    log('ERRORE: ' + e.message, 'error');
+                }
+                
+                // Verifica se l'elemento root esiste
+                log('Verifica elemento root...', 'info');
+                const rootElement = document.getElementById('root');
+                if (!rootElement) {
+                    log('ERRORE: Elemento con id "root" non trovato. Questo è normale se stai eseguendo questa diagnostica fuori dall\'applicazione.', 'error');
+                } else {
+                    log('Elemento root trovato.', 'success');
+                    
+                    // Verifica se l'elemento root ha figli
+                    if (rootElement.childNodes.length === 0) {
+                        log('AVVISO: Elemento root è vuoto. Questo potrebbe indicare un problema di rendering.', 'warning');
+                    } else {
+                        log('Elemento root contiene elementi figli.', 'success');
+                    }
+                }
+                
+                // Verifica errori nella console
+                log('Verifica errori nella console del browser...', 'info');
+                log('Per favore, apri la console del browser (F12) e cerca messaggi di errore in rosso.', 'info');
+                
+                // Suggerimenti finali
+                log('\nSuggerimenti per risolvere il problema:', 'info');
+                log('1. Usa il file main-debug.tsx come descritto nelle istruzioni', 'info');
+                log('2. Verifica gli store Zustand modificando temporaneamente App.tsx', 'info');
+                log('3. Prova a semplificare i componenti di routing come mostrato nelle istruzioni', 'info');
+                log('4. Reinstalla le dipendenze con npm cache clean --force && npm install', 'info');
+                log('\nDiagnostica completata!', 'success');
+            }, 500);
+        });
+    </script>
+</body>
+</html>

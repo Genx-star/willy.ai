@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
+  <!-- Versione 2: Stile Tecnologico e Futuristico -->
+  <style>
+    .text { font-family: 'Arial', sans-serif; font-weight: bold; }
+    .willy { fill: #6200EA; }
+    .ai { fill: #3700B3; }
+    .circuit { stroke: #B388FF; fill: none; stroke-width: 1.5; }
+    .glow { filter: url(#neon); }
+  </style>
+  
+  <!-- Filtro effetto neon -->
+  <defs>
+    <filter id="neon" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite operator="over" in="SourceGraphic"/>
+    </filter>
+  </defs>
+  
+  <!-- Pattern circuiti -->
+  <g class="circuit glow">
+    <path d="M10,30 Q30,30 30,50 T50,70"/>
+    <path d="M70,20 L70,80 M90,50 L120,50"/>
+    <path d="M140,30 Q160,30 160,50 T180,70"/>
+  </g>
+  
+  <!-- Testo principale con effetto neon -->
+  <g class="glow">
+    <text x="40" y="60" class="text willy" font-size="45">WILLY</text>
+    <text x="170" y="60" class="text ai" font-size="45">.AI</text>
+  </g>
+  
+  <!-- Elementi decorativi -->
+  <circle class="willy glow" cx="155" cy="40" r="3"/>
+  <circle class="ai glow" cx="250" cy="60" r="2"/>
+</svg>

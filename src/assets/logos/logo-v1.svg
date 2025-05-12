@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
+  <!-- Versione 1: Stile Minimalista Moderno -->
+  <style>
+    .text { font-family: 'Arial', sans-serif; font-weight: bold; }
+    .willy { fill: #2196F3; }
+    .ai { fill: #1976D2; }
+    .dot { fill: #64B5F6; }
+    .circuit { stroke: #BBDEFB; fill: none; stroke-width: 1; }
+  </style>
+  
+  <!-- Circuiti di background -->
+  <path class="circuit" d="M20,50 L60,50 M80,30 L80,70 M100,50 L140,50 M160,20 L160,80"/>
+  
+  <!-- Testo principale -->
+  <text x="50" y="65" class="text willy" font-size="40">WILLY</text>
+  <text x="180" y="65" class="text ai" font-size="40">.AI</text>
+  
+  <!-- Punto decorativo -->
+  <circle class="dot" cx="165" cy="45" r="4"/>
+</svg>

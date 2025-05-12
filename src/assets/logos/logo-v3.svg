@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
+  <!-- Versione 3: Stile Elegante e Professionale -->
+  <style>
+    .text { font-family: 'Arial', sans-serif; }
+    .willy { fill: #212121; }
+    .ai { fill: #424242; }
+    .accent { fill: #00BFA5; }
+    .line { stroke: #E0E0E0; fill: none; stroke-width: 1; }
+  </style>
+  
+  <!-- Linee decorative -->
+  <g class="line">
+    <line x1="20" y1="75" x2="280" y2="75"/>
+    <line x1="20" y1="25" x2="280" y2="25"/>
+  </g>
+  
+  <!-- Testo principale -->
+  <text x="45" y="58" class="text willy" font-size="42" font-weight="300">WILLY</text>
+  <text x="175" y="58" class="text ai" font-size="42" font-weight="600">.AI</text>
+  
+  <!-- Elementi decorativi -->
+  <rect class="accent" x="20" y="25" width="3" height="50"/>
+  <rect class="accent" x="277" y="25" width="3" height="50"/>
+  <circle class="accent" cx="160" cy="50" r="3"/>
+</svg>
