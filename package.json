@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "$(npm bin)/tsc && vite build",
+    "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -45,8 +45,7 @@
     "jest": "^29.7.0",
     "recharts": "^2.15.3",
     "terser": "^5.39.1",
-    "typescript": "^5.0.2",
-    "vite": "^6.3.5"
+    "typescript": "^5.8.3"
   },
   "jest": {
     "setupFilesAfterEnv": [
