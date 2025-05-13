@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Snackbar, Alert, AlertColor } from '@mui/material';
+import React from 'react'; // Corretto: rimossa virgola dopo React
+import { Snackbar, Alert } from '@mui/material';
+import type { AlertColor } from '@mui/material'; // Importato AlertColor come tipo
 
 interface NotificationProps {
   open: boolean;
@@ -29,3 +30,4 @@ const NotificationSystem: React.FC<NotificationProps> = ({
 };
 
 export default NotificationSystem;
+

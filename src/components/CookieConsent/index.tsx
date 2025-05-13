@@ -11,7 +11,7 @@ import {
   Checkbox,
   Snackbar,
   Alert,
-  Link,
+  
   Paper
 } from '@mui/material';
 import CookieIcon from '@mui/icons-material/Cookie';

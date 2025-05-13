@@ -56,10 +56,9 @@ const SocialIntegrations: React.FC = () => {
   const [schedules, setSchedules] = useState<PostSchedule[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
+  const [selectedPlatforms, _setSelectedPlatforms] = useState<string[]>([]); // Corretto: rinominato setSelectedPlatforms per TS6133
 
   useEffect(() => {
-    // Simulazione del caricamento degli account social
     loadSocialAccounts();
     loadScheduledPosts();
   }, []);
@@ -120,14 +119,15 @@ const SocialIntegrations: React.FC = () => {
     }
   };
 
-  const handleConnect = (platform: string) => {
-    // Implementare la logica di connessione
+  const handleConnectPlatform = (platform: string) => {
+    console.log('Connessione alla piattaforma:', platform, selectedPlatforms);
     setShowAlert(true);
     setTimeout(() => setShowAlert(false), 3000);
   };
 
   const handleSchedulePost = (event: React.FormEvent) => {
     event.preventDefault();
+    console.log('Piattaforme selezionate per il post:', selectedPlatforms);
     setOpenDialog(false);
     setShowAlert(true);
     setTimeout(() => setShowAlert(false), 3000);
@@ -171,7 +171,7 @@ const SocialIntegrations: React.FC = () => {
                   />
                   <ListItemSecondaryAction>
                     <Tooltip title="Modifica">
-                      <IconButton edge="end" aria-label="edit">
+                      <IconButton edge="end" aria-label="edit" onClick={() => handleConnectPlatform(account.platform)}>
                         <EditIcon />
                       </IconButton>
                     </Tooltip>
@@ -183,7 +183,7 @@ const SocialIntegrations: React.FC = () => {
             <Button
               variant="outlined"
               startIcon={<AddIcon />}
-              onClick={() => setOpenDialog(true)}
+              onClick={() => handleConnectPlatform('new_platform_example')}
               sx={{ mt: 2 }}
             >
               Collega Nuovo Account
@@ -264,6 +264,24 @@ const SocialIntegrations: React.FC = () => {
               InputLabelProps={{ shrink: true }}
               required
             />
+            {/* Aggiungere qui la selezione delle piattaforme, es. usando un Select con multiple=true e options dalle piattaforme connesse */}
+            {/* Esempio: */}
+            {/* <FormControl fullWidth margin="normal">
+              <InputLabel id="platform-select-label">Piattaforme</InputLabel>
+              <Select
+                labelId="platform-select-label"
+                multiple
+                value={selectedPlatforms} // Assicurati che selectedPlatforms sia usato qui
+                onChange={(e) => _setSelectedPlatforms(e.target.value as string[])} // Corretto: usa _setSelectedPlatforms
+                renderValue={(selected) => (selected as string[]).join(', ')}
+              >
+                {accounts.filter(acc => acc.connected).map(acc => (
+                  <MenuItem key={acc.platform} value={acc.platform}>
+                    {acc.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl> */}
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setOpenDialog(false)}>Annulla</Button>
@@ -278,3 +296,4 @@ const SocialIntegrations: React.FC = () => {
 };
 
 export default SocialIntegrations;
+

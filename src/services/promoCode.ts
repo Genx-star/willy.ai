@@ -1,5 +1,3 @@
-import { UserSubscription, SubscriptionPlan } from './subscription';
-
 export interface PromoCode {
   code: string;
   planId: string;

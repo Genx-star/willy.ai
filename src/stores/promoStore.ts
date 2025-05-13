@@ -21,7 +21,7 @@ interface PromoState {
   deactivatePromoCode: (code: string) => Promise<void>;
 }
 
-export const usePromoStore = create<PromoState>((set, get) => ({
+export const usePromoStore = create<PromoState>((set, _get) => ({
   promoCodes: [],
   activePromotions: [],
   isLoading: false,
@@ -51,8 +51,8 @@ export const usePromoStore = create<PromoState>((set, get) => ({
         activePromotions: [...state.activePromotions, activation]
       }));
       return activation;
-    } catch (error) {
-      set({ error: 'Errore durante l\'attivazione del codice promozionale' });
+    } catch (error) { 
+      set({ error: "Errore durante l'attivazione del codice promozionale" });
       throw error;
     } finally {
       set({ isLoading: false });

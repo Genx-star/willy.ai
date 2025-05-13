@@ -10,11 +10,11 @@ import {
   TextField,
   Chip,
   Tooltip,
-  IconButton
+  
 } from '@mui/material';
 import { iconLibrary, iconCategories } from '@/data/iconLibrary';
 import SearchIcon from '@mui/icons-material/Search';
-import FilterListIcon from '@mui/icons-material/FilterList';
+
 import LockIcon from '@mui/icons-material/Lock';
 
 interface IconSelectorProps {
@@ -59,7 +59,7 @@ const IconSelector = ({ subscription, onSelect }: IconSelectorProps) => {
       {/* Tabs delle categorie */}
       <Tabs
         value={activeCategory}
-        onChange={(e, newValue) => setActiveCategory(newValue)}
+        onChange={(_event, newValue) => setActiveCategory(newValue as string)}
         variant="scrollable"
         scrollButtons="auto"
         sx={{ mb: 3 }}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, } from 'react';
 import {
   Box,
   Typography,
@@ -14,7 +14,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Paper,
-  Divider,
+  
   CircularProgress,
   Alert
 } from '@mui/material';
@@ -36,7 +36,7 @@ interface SubtitleManagerProps {
   onSave: (subtitles: Subtitle[]) => void;
 }
 
-const SubtitleManager = ({ videoSrc, onSave }: SubtitleManagerProps) => {
+const SubtitleManager = ({  onSave }: SubtitleManagerProps) => {
   const [subtitles, setSubtitles] = useState<Subtitle[]>([]);
   const [selectedLanguage, setSelectedLanguage] = useState('it');
   const [isGenerating, setIsGenerating] = useState(false);

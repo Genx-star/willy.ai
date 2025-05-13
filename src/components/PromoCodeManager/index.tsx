@@ -24,7 +24,7 @@ import {
   Alert,
   CircularProgress
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+
 import BlockIcon from '@mui/icons-material/Block';
 import AddIcon from '@mui/icons-material/Add';
 import { usePromoStore } from '../../stores/promoStore';

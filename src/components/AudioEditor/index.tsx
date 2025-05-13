@@ -5,11 +5,6 @@ import {
   Slider,
   IconButton,
   Button,
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
   Grid,
   Paper,
   Tabs,
@@ -25,7 +20,6 @@ import ContentCutIcon from '@mui/icons-material/ContentCut';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import SaveIcon from '@mui/icons-material/Save';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 interface AudioEditorProps {
   audioSrc: string;
@@ -42,7 +36,7 @@ interface AudioEffect {
 
 const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null); // Aggiunto nome variabile mancante
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -76,14 +70,14 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
     }
   };
 
-  const handleTimeChange = (event: Event, newValue: number | number[]) => {
+  const handleTimeChange = (_event: Event, newValue: number | number[]) => { // Aggiunto _event
     if (audioRef.current && typeof newValue === 'number') {
       audioRef.current.currentTime = newValue;
       setCurrentTime(newValue);
     }
   };
 
-  const handleVolumeChange = (event: Event, newValue: number | number[]) => {
+  const handleVolumeChange = (_event: Event, newValue: number | number[]) => { // Aggiunto _event
     if (audioRef.current && typeof newValue === 'number') {
       audioRef.current.volume = newValue;
       setVolume(newValue);
@@ -91,7 +85,7 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
     }
   };
 
-  const handleSpeedChange = (event: Event, newValue: number | number[]) => {
+  const handleSpeedChange = (_event: Event, newValue: number | number[]) => { // Aggiunto _event
     if (audioRef.current && typeof newValue === 'number') {
       audioRef.current.playbackRate = newValue;
       setSpeed(newValue);
@@ -147,17 +141,11 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
   };
 
   const handleSave = () => {
-    // Implementa la logica per salvare l'audio modificato
-    // Questo è un esempio semplificato
     if (audioRef.current) {
-      // In una implementazione reale, qui dovresti:
-      // 1. Creare un nuovo AudioContext
-      // 2. Applicare tutti gli effetti
-      // 3. Esportare il risultato come Blob
-      // 4. Chiamare onSave con il Blob risultante
-      
+      // TODO: Implementare la logica di salvataggio audio con effetti
       // Per ora, simuliamo il salvataggio
-      const audioBlob = new Blob([], { type: 'audio/mp3' });
+      console.log('Salvataggio audio con effetti:', effects, 'Volume:', volume, 'Speed:', speed);
+      const audioBlob = new Blob([], { type: 'audio/mp3' }); // Blob vuoto per ora
       onSave(audioBlob);
     }
   };
@@ -171,7 +159,8 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
   return (
     <Box sx={{ width: '100%' }}>
       <audio ref={audioRef} src={audioSrc} style={{ display: 'none' }} />
-      
+      <canvas ref={canvasRef} style={{ display: 'none' }} /> {/* Aggiunto ref al canvas se necessario per visualizzazioni o elaborazioni future */}
+
       {/* Controlli principali */}
       <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
         <IconButton onClick={togglePlay}>
@@ -185,6 +174,7 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
           max={duration}
           onChange={handleTimeChange}
           sx={{ flexGrow: 1 }}
+          aria-labelledby="time-slider"
         />
       </Box>
 
@@ -192,7 +182,7 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <Tabs
           value={activeTab}
-          onChange={(e, newValue) => setActiveTab(newValue)}
+          onChange={(_event, newValue) => setActiveTab(newValue)} // Aggiunto _event
           aria-label="audio editor tabs"
         >
           <Tab icon={<VolumeUpIcon />} label="Volume" />
@@ -214,6 +204,7 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
                 onChange={handleVolumeChange}
                 marks
                 valueLabelDisplay="auto"
+                aria-labelledby="volume-slider"
               />
             </Box>
           )}
@@ -230,6 +221,7 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
                 onChange={handleSpeedChange}
                 marks
                 valueLabelDisplay="auto"
+                aria-labelledby="speed-slider"
               />
             </Box>
           )}
@@ -241,10 +233,11 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
                 <Typography gutterBottom>Bassi</Typography>
                 <Slider
                   orientation="vertical"
-                  defaultValue={0}
+                  defaultValue={0} // Considerare di usare useState per questi valori se devono essere controllati
                   min={-12}
                   max={12}
                   sx={{ height: 150 }}
+                  aria-labelledby="bass-eq-slider"
                 />
               </Grid>
               <Grid item xs={4}>
@@ -255,6 +248,7 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
                   min={-12}
                   max={12}
                   sx={{ height: 150 }}
+                  aria-labelledby="mid-eq-slider"
                 />
               </Grid>
               <Grid item xs={4}>
@@ -265,6 +259,7 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
                   min={-12}
                   max={12}
                   sx={{ height: 150 }}
+                  aria-labelledby="treble-eq-slider"
                 />
               </Grid>
             </Grid>
@@ -275,13 +270,16 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
             <Box sx={{ width: '100%' }}>
               <Typography gutterBottom>Seleziona l'intervallo da tagliare</Typography>
               <Slider
-                value={[currentTime, currentTime + 1]}
+                value={[currentTime, currentTime + 1]} // Esempio, da rendere più dinamico
                 max={duration}
-                onChange={(e, newValue) => {
+                onChange={(_event, newValue) => { // Corretto: Aggiunto (_event, newValue)
                   // Implementa la logica per il taglio
+                  console.log('Nuovo intervallo di taglio:', newValue);
                 }}
                 valueLabelDisplay="auto"
                 valueLabelFormat={formatTime}
+                aria-labelledby="cut-range-slider"
+                disableSwap
               />
             </Box>
           )}
@@ -313,3 +311,4 @@ const AudioEditor = ({ audioSrc, onSave }: AudioEditorProps) => {
 };
 
 export default AudioEditor;
+

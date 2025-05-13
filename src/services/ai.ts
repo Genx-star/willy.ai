@@ -61,6 +61,7 @@ export const generateContent = async ({ prompt, type }: GenerateContentParams): 
       case 'video':
         // TODO: Implementare la generazione video quando disponibile
         return {
+          content: '', // Aggiunto content mancante
           status: 'error',
           message: 'La generazione video non è ancora disponibile',
         };
@@ -92,6 +93,7 @@ export const generateContent = async ({ prompt, type }: GenerateContentParams): 
 
       default:
         return {
+          content: '', // Aggiunto content mancante
           status: 'error',
           message: 'Tipo di contenuto non supportato',
         };

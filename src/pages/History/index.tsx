@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -6,23 +6,23 @@ import {
   Card,
   CardContent,
   CardActions,
-  Button,
+  // Button, // Rimosso TS6133
   Chip,
   IconButton,
   TextField,
   InputAdornment
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ShareIcon from '@mui/icons-material/Share';
-import TextFieldsIcon from '@mui/icons-material/TextFields';
-import ImageIcon from '@mui/icons-material/Image';
-import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
-import AudiotrackIcon from '@mui/icons-material/Audiotrack';
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ShareIcon from "@mui/icons-material/Share";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
+import ImageIcon from "@mui/icons-material/Image";
+import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
+import AudiotrackIcon from "@mui/icons-material/Audiotrack";
 
 interface ContentItem {
   id: string;
-  type: 'text' | 'image' | 'video' | 'audio';
+  type: "text" | "image" | "video" | "audio";
   title: string;
   createdAt: string;
   preview: string;
@@ -30,48 +30,48 @@ interface ContentItem {
 
 const mockHistory: ContentItem[] = [
   {
-    id: '1',
-    type: 'text',
-    title: 'Marketing Campaign Post',
-    createdAt: '2023-08-10',
-    preview: 'Discover our latest innovation in AI-powered solutions...'
+    id: "1",
+    type: "text",
+    title: "Marketing Campaign Post",
+    createdAt: "2023-08-10",
+    preview: "Discover our latest innovation in AI-powered solutions..."
   },
   {
-    id: '2',
-    type: 'image',
-    title: 'Product Showcase',
-    createdAt: '2023-08-09',
-    preview: 'https://placeholder.com/300x200'
+    id: "2",
+    type: "image",
+    title: "Product Showcase",
+    createdAt: "2023-08-09",
+    preview: "https://placeholder.com/300x200"
   },
   {
-    id: '3',
-    type: 'video',
-    title: 'Tutorial Video',
-    createdAt: '2023-08-08',
-    preview: 'https://placeholder.com/video'
+    id: "3",
+    type: "video",
+    title: "Tutorial Video",
+    createdAt: "2023-08-08",
+    preview: "https://placeholder.com/video"
   },
   {
-    id: '4',
-    type: 'audio',
-    title: 'Podcast Intro',
-    createdAt: '2023-08-07',
-    preview: 'https://placeholder.com/audio'
+    id: "4",
+    type: "audio",
+    title: "Podcast Intro",
+    createdAt: "2023-08-07",
+    preview: "https://placeholder.com/audio"
   }
 ];
 
 const History = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [history, setHistory] = useState<ContentItem[]>(mockHistory);
 
   const getContentIcon = (type: string) => {
     switch (type) {
-      case 'text':
+      case "text":
         return <TextFieldsIcon />;
-      case 'image':
+      case "image":
         return <ImageIcon />;
-      case 'video':
+      case "video":
         return <VideoLibraryIcon />;
-      case 'audio':
+      case "audio":
         return <AudiotrackIcon />;
       default:
         return null;
@@ -84,7 +84,7 @@ const History = () => {
 
   const handleShare = (id: string) => {
     // TODO: Implement sharing functionality
-    console.log('Share content:', id);
+    console.log("Share content:", id);
   };
 
   const filteredHistory = history.filter(item =>
@@ -92,8 +92,8 @@ const History = () => {
   );
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+    <Box sx={{ maxWidth: 1200, mx: "auto" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 4 }}>
         <Typography variant="h4">Content History</Typography>
         <TextField
           size="small"
@@ -115,17 +115,17 @@ const History = () => {
           <Grid item xs={12} sm={6} md={4} key={item.id}>
             <Card
               sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'transform 0.2s',
-                '&:hover': {
-                  transform: 'translateY(-4px)'
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                transition: "transform 0.2s",
+                "&:hover": {
+                  transform: "translateY(-4px)"
                 }
               }}
             >
               <CardContent sx={{ flexGrow: 1 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                   {getContentIcon(item.type)}
                   <Chip
                     label={item.type.toUpperCase()}
@@ -145,7 +145,7 @@ const History = () => {
                   </Typography>
                 </Box>
               </CardContent>
-              <CardActions sx={{ justifyContent: 'flex-end' }}>
+              <CardActions sx={{ justifyContent: "flex-end" }}>
                 <IconButton
                   size="small"
                   onClick={() => handleShare(item.id)}
@@ -167,7 +167,7 @@ const History = () => {
       </Grid>
 
       {filteredHistory.length === 0 && (
-        <Box sx={{ textAlign: 'center', mt: 4 }}>
+        <Box sx={{ textAlign: "center", mt: 4 }}>
           <Typography variant="h6" color="textSecondary">
             No content found
           </Typography>
@@ -178,3 +178,4 @@ const History = () => {
 };
 
 export default History;
+

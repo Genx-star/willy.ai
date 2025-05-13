@@ -7,13 +7,11 @@ import {
   StepContent,
   Button,
   Typography,
-  Paper,
   Tooltip,
   IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
   Snackbar,
   Alert
 } from '@mui/material';
@@ -37,7 +35,8 @@ const TutorialGuide: React.FC<TutorialGuideProps> = ({ onComplete, onSkip }) => 
   const [activeStep, setActiveStep] = useState(0);
   const [showTutorial, setShowTutorial] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  const [hintMessage, setHintMessage] = useState('');
+  // setHintMessage non è utilizzata, quindi la rinominiamo con _ per convenzione
+  const [hintMessage, _setHintMessage] = useState(''); 
 
   const tutorialSteps: TutorialStep[] = [
     {
@@ -93,17 +92,21 @@ const TutorialGuide: React.FC<TutorialGuideProps> = ({ onComplete, onSkip }) => 
     if (onComplete) onComplete();
   };
 
-  const showContextualHint = (message: string) => {
-    setHintMessage(message);
+  // Funzione displayHint commentata perché non utilizzata (causava TS6133 per setHintMessage)
+  /*
+  const displayHint = (message: string) => {
+    _setHintMessage(message); // Aggiornato per usare _setHintMessage se si decommenta
     setShowHint(true);
   };
+  */
 
   return (
     <>
       <IconButton
         color="primary"
-        onClick={() => setShowTutorial(true)}
+        onClick={() => setShowTutorial(true)} 
         sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        aria-label="Apri guida tutorial"
       >
         <Tooltip title="Apri guida">
           <HelpIcon />
@@ -122,6 +125,7 @@ const TutorialGuide: React.FC<TutorialGuideProps> = ({ onComplete, onSkip }) => 
           <IconButton
             onClick={handleSkip}
             sx={{ position: 'absolute', right: 8, top: 8 }}
+            aria-label="Chiudi tutorial"
           >
             <CloseIcon />
           </IconButton>
@@ -133,6 +137,8 @@ const TutorialGuide: React.FC<TutorialGuideProps> = ({ onComplete, onSkip }) => 
                 <StepLabel>{step.title}</StepLabel>
                 <StepContent>
                   <Typography>{step.description}</Typography>
+                  {/* Esempio di come potresti usare displayHint, se necessario */}
+                  {/* <Button onClick={() => displayHint(Suggerimento per ${step.title})}>Mostra Suggerimento</Button> */}
                   <Box sx={{ mb: 2, mt: 1 }}>
                     <Button
                       variant="contained"
@@ -178,3 +184,4 @@ const TutorialGuide: React.FC<TutorialGuideProps> = ({ onComplete, onSkip }) => 
 };
 
 export default TutorialGuide;
+

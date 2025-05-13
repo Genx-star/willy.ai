@@ -18,7 +18,7 @@ interface CacheStore {
 
 const DEFAULT_EXPIRATION = 1000 * 60 * 60; // 1 ora
 
-export const useCacheStore = create<CacheStore>(
+export const useCacheStore = create<CacheStore>()(
   persist(
     (set, get) => ({
       items: {},
@@ -68,7 +68,10 @@ export const useCacheStore = create<CacheStore>(
     }),
     {
       name: 'cache-storage',
-      getStorage: () => localStorage,
+      // getStorage: () => localStorage, // getStorage è deprecato in favore di storage e storage.getItem/setItem/removeItem
+      // Per localStorage, Zustand usa di default un wrapper, quindi spesso non serve specificarlo esplicitamente
+      // o si usa storage: createJSONStorage(() => localStorage)
+      partialize: (state: CacheStore) => ({ items: state.items }),
     }
   )
 );

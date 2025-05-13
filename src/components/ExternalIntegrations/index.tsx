@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -37,7 +37,7 @@ interface Integration {
 
 const ExternalIntegrations: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [showGuide, setShowGuide] = useState(false);
+  // const [showGuide, setShowGuide] = useState(false); // Rimosso: la logica di visibilità è in ContextualGuide
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [integrations, setIntegrations] = useState<Integration[]>([
     {
@@ -183,9 +183,9 @@ const ExternalIntegrations: React.FC = () => {
     }
   ];
 
-  const handleGuideComplete = () => {
-    setShowGuide(false);
-  };
+  // const handleGuideComplete = () => { // Rimosso: la logica di visibilità è in ContextualGuide
+  //   setShowGuide(false);
+  // };
 
   return (
     <Box sx={{ p: 3 }}>
@@ -304,10 +304,12 @@ const ExternalIntegrations: React.FC = () => {
       <ContextualGuide
         feature="Integrazioni Esterne"
         steps={guideSteps}
-        onComplete={handleGuideComplete}
+        // onComplete={handleGuideComplete} // Rimosso: la logica di visibilità è in ContextualGuide
+        // showGuide={showGuide} // Rimosso: la prop non esiste in ContextualGuideProps
       />
     </Box>
   );
 };
 
 export default ExternalIntegrations;
+

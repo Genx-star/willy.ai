@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   Box,
   Typography,
-  Paper,
   Grid,
   Card,
   CardContent,
@@ -15,8 +14,6 @@ import {
   ListItemText,
   Chip,
   Divider,
-  IconButton,
-  Tooltip
 } from '@mui/material';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import SearchIcon from '@mui/icons-material/Search';
@@ -48,7 +45,7 @@ interface DataPoint {
 }
 
 const PresentationAI = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(); // Corretto: aggiunta { t }
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [contentAnalysis, setContentAnalysis] = useState<ContentAnalysis | null>(null);
@@ -82,7 +79,7 @@ const PresentationAI = () => {
       // Suggerimento template ottimali
       suggestTemplates();
     } catch (error) {
-      console.error('Errore durante l\'analisi del contenuto:', error);
+      console.error('Errore durante l\"analisi del contenuto:', error);
     } finally {
       setIsAnalyzing(false);
     }
@@ -156,9 +153,12 @@ const PresentationAI = () => {
       await new Promise(resolve => setTimeout(resolve, 3000));
       
       // Qui verrebbe implementata la logica effettiva di generazione
+      console.log('Generazione slide avviata con:', contentAnalysis, relevantData, suggestedTemplates); // Esempio di log
+      alert('Generazione slide completata (simulazione)'); // Feedback utente
       
     } catch (error) {
       console.error('Errore durante la generazione delle slide:', error);
+      alert('Errore durante la generazione delle slide.'); // Feedback utente
     } finally {
       setIsGenerating(false);
     }
@@ -168,7 +168,7 @@ const PresentationAI = () => {
     <Box sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <AutoFixHighIcon color="primary" />
-        Assistente AI Presentazioni
+        {t('presentationAI.title', 'Assistente AI Presentazioni')}
       </Typography>
 
       <Grid container spacing={3}>
@@ -178,7 +178,7 @@ const PresentationAI = () => {
             <CardContent>
               <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <SearchIcon color="primary" />
-                Analisi Contenuti
+                {t('presentationAI.contentAnalysis.title', 'Analisi Contenuti')}
               </Typography>
               
               <TextField
@@ -186,7 +186,7 @@ const PresentationAI = () => {
                 multiline
                 rows={4}
                 variant="outlined"
-                placeholder="Inserisci il contenuto da analizzare..."
+                placeholder={t('presentationAI.contentAnalysis.placeholder', 'Inserisci il contenuto da analizzare...')}
                 value={currentContent}
                 onChange={(e) => setCurrentContent(e.target.value)}
                 sx={{ mb: 2 }}
@@ -199,18 +199,18 @@ const PresentationAI = () => {
                 startIcon={isAnalyzing ? <CircularProgress size={20} /> : <AutoFixHighIcon />}
                 fullWidth
               >
-                {isAnalyzing ? 'Analisi in corso...' : 'Analizza Contenuto'}
+                {isAnalyzing ? t('presentationAI.contentAnalysis.analyzing', 'Analisi in corso...') : t('presentationAI.contentAnalysis.analyzeButton', 'Analizza Contenuto')}
               </Button>
 
               {contentAnalysis && (
                 <Box sx={{ mt: 2 }}>
                   <Typography variant="subtitle1" gutterBottom>
-                    Risultati Analisi
+                    {t('presentationAI.contentAnalysis.resultsTitle', 'Risultati Analisi')}
                   </Typography>
                   <List>
                     <ListItem>
                       <ListItemText
-                        primary="Parole Chiave"
+                        primary={t('presentationAI.contentAnalysis.keywords', 'Parole Chiave')}
                         secondary={
                           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
                             {contentAnalysis.keywords.map((keyword, index) => (
@@ -229,7 +229,7 @@ const PresentationAI = () => {
                     <Divider />
                     <ListItem>
                       <ListItemText
-                        primary="Suggerimenti di Miglioramento"
+                        primary={t('presentationAI.contentAnalysis.suggestions', 'Suggerimenti di Miglioramento')}
                         secondary={
                           <List dense>
                             {contentAnalysis.suggestions.map((suggestion, index) => (
@@ -254,7 +254,7 @@ const PresentationAI = () => {
             <CardContent>
               <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <AnalyticsIcon color="primary" />
-                Dati e Statistiche Rilevanti
+                {t('presentationAI.dataStats.title', 'Dati e Statistiche Rilevanti')}
               </Typography>
 
               {relevantData.length > 0 ? (
@@ -272,14 +272,14 @@ const PresentationAI = () => {
                             />
                           </Box>
                         }
-                        secondary={`Fonte: ${data.source} | Rilevanza: ${Math.round(data.relevance * 100)}%`}
+                        secondary={`${t('presentationAI.dataStats.source', 'Fonte')}: ${data.source} | ${t('presentationAI.dataStats.relevance', 'Rilevanza')}: ${Math.round(data.relevance * 100)}%`}
                       />
                     </ListItem>
                   ))}
                 </List>
               ) : (
                 <Alert severity="info">
-                  Analizza il contenuto per trovare dati e statistiche pertinenti
+                  {t('presentationAI.dataStats.noData', 'Analizza il contenuto per trovare dati e statistiche pertinenti')}
                 </Alert>
               )}
             </CardContent>
@@ -290,7 +290,7 @@ const PresentationAI = () => {
             <CardContent>
               <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <StyleIcon color="primary" />
-                Template Suggeriti
+                {t('presentationAI.suggestedTemplates.title', 'Template Suggeriti')}
               </Typography>
 
               {suggestedTemplates.length > 0 ? (
@@ -299,7 +299,7 @@ const PresentationAI = () => {
                     <ListItem key={template.id}>
                       <ListItemText
                         primary={template.name}
-                        secondary={`Tipo: ${template.type} | Layout: ${template.layout}`}
+                        secondary={`${t('presentationAI.suggestedTemplates.type', 'Tipo')}: ${template.type} | ${t('presentationAI.suggestedTemplates.layout', 'Layout')}: ${template.layout}`}
                       />
                       <Chip
                         label={`${Math.round(template.suitabilityScore * 100)}% Match`}
@@ -311,7 +311,7 @@ const PresentationAI = () => {
                 </List>
               ) : (
                 <Alert severity="info">
-                  Analizza il contenuto per ricevere suggerimenti sui template
+                  {t('presentationAI.suggestedTemplates.noTemplates', 'Analizza il contenuto per ricevere suggerimenti sui template')}
                 </Alert>
               )}
             </CardContent>
@@ -324,7 +324,7 @@ const PresentationAI = () => {
             <CardContent>
               <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <TrendingUpIcon color="primary" />
-                Generazione Presentazione
+                {t('presentationAI.slideGeneration.title', 'Generazione Presentazione')}
               </Typography>
 
               <Button
@@ -335,12 +335,12 @@ const PresentationAI = () => {
                 startIcon={isGenerating ? <CircularProgress size={20} /> : <AutoFixHighIcon />}
                 fullWidth
               >
-                {isGenerating ? 'Generazione in corso...' : 'Genera Presentazione'}
+                {isGenerating ? t('presentationAI.slideGeneration.generating', 'Generazione in corso...') : t('presentationAI.slideGeneration.generateButton', 'Genera Presentazione')}
               </Button>
 
               {!contentAnalysis && (
                 <Alert severity="info" sx={{ mt: 2 }}>
-                  Analizza prima il contenuto per generare la presentazione
+                  {t('presentationAI.slideGeneration.noAnalysis', 'Analizza prima il contenuto per generare la presentazione')}
                 </Alert>
               )}
             </CardContent>
@@ -352,3 +352,4 @@ const PresentationAI = () => {
 };
 
 export default PresentationAI;
+

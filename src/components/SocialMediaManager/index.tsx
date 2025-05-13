@@ -16,7 +16,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
   Select,
   MenuItem,
   FormControl,
@@ -24,27 +23,25 @@ import {
   Tabs,
   Tab,
   Chip,
-  Switch,
-  Tooltip,
   Alert,
   CircularProgress,
   LinearProgress,
-  Badge,
-  Divider
+  // Divider, // Rimosso perché non utilizzato
+  ListItemIcon, // Aggiunto per MonetizationOnIcon
+  Tooltip, // Importato ma non utilizzato, verrà rimosso o utilizzato
 } from '@mui/material';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import PinterestIcon from '@mui/icons-material/Pinterest';
-import TikTokIcon from '@mui/icons-material/MusicVideo';
+import TikTokIcon from '@mui/icons-material/MusicVideo'; // Assumendo sia l'icona corretta per TikTok
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import XIcon from '@mui/icons-material/Twitter';
-import YouTubeIcon from '@mui/icons-material/YouTube';
+import XIcon from '@mui/icons-material/Twitter'; // Assumendo sia l'icona corretta per X
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Aggiunto MonetizationOnIcon
 import { useTranslation } from 'react-i18next';
 
 interface SocialPost {
@@ -53,7 +50,7 @@ interface SocialPost {
   platform: string;
   scheduledTime: Date;
   status: 'draft' | 'scheduled' | 'published' | 'failed';
-  type: 'text' | 'image' | 'video' | 'audio';
+  type: 'text' | 'image' | 'video' | 'audio'; // Aggiunto type qui, se mancava
   performance?: {
     likes: number;
     shares: number;
@@ -74,20 +71,21 @@ interface ContentSuggestion {
   expectedEngagement?: number;
 }
 
-interface AnalyticsData {
-  platform: string;
-  engagement: number;
-  reach: number;
-  followers: number;
-  growth: number;
-  roi: number;
-  sentiment: 'positive' | 'neutral' | 'negative';
-  audienceInsights: {
-    demographics: string[];
-    interests: string[];
-    activeHours: string[];
-  };
-}
+// Rimosso AnalyticsData e setAnalyticsData perché non utilizzati
+// interface AnalyticsData {
+//   platform: string;
+//   engagement: number;
+//   reach: number;
+//   followers: number;
+//   growth: number;
+//   roi: number;
+//   sentiment: 'positive' | 'neutral' | 'negative';
+//   audienceInsights: {
+//     demographics: string[];
+//     interests: string[];
+//     activeHours: string[];
+//   };
+// }
 
 interface SubscriptionPlan {
   id: string;
@@ -103,7 +101,7 @@ const SocialMediaManager = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [posts, setPosts] = useState<SocialPost[]>([]);
   const [suggestions, setSuggestions] = useState<ContentSuggestion[]>([]);
-  const [analytics, setAnalytics] = useState<AnalyticsData[]>([]);
+  // const [analyticsData, setAnalyticsData] = useState<AnalyticsData[]>([]); // Rimosso perché non utilizzato
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(['linkedin', 'instagram', 'facebook']);
   const [showPlansDialog, setShowPlansDialog] = useState(false);
@@ -137,7 +135,7 @@ const SocialMediaManager = () => {
         'Supporto dedicato 24/7',
         'Personalizzazione AI avanzata'
       ],
-      socialAccounts: -1,
+      socialAccounts: -1, // -1 per illimitato
       isPopular: true
     },
     {
@@ -155,47 +153,56 @@ const SocialMediaManager = () => {
         'API personalizzata',
         'Account manager dedicato'
       ],
-      socialAccounts: -1
+      socialAccounts: -1 // -1 per illimitato
     }
   ];
 
-  // Funzione per generare contenuti con AI
   const generateContent = async () => {
     setIsGenerating(true);
     try {
-      // Simulazione della generazione di contenuti con AI
       await new Promise(resolve => setTimeout(resolve, 2000));
       const newSuggestion: ContentSuggestion = {
         id: Date.now().toString(),
         content: 'Contenuto generato automaticamente dall\'AI...',
         type: 'text',
-        platform: 'linkedin',
-        confidence: 0.85
+        platform: selectedPlatforms.length > 0 ? selectedPlatforms[0] : 'linkedin', // Usa una piattaforma selezionata o un default
+        confidence: 0.85,
+        aiGenerated: true, // Proprietà mancante aggiunta
       };
-      setSuggestions([...suggestions, newSuggestion]);
+      setSuggestions(prevSuggestions => [...prevSuggestions, newSuggestion]);
     } catch (error) {
       console.error('Errore nella generazione del contenuto:', error);
+      // Potresti voler mostrare una notifica all'utente qui
     } finally {
       setIsGenerating(false);
     }
   };
 
-  // Funzione per pianificare un post
   const schedulePost = (suggestion: ContentSuggestion) => {
     const newPost: SocialPost = {
       id: Date.now().toString(),
       content: suggestion.content,
       platform: suggestion.platform,
       scheduledTime: new Date(Date.now() + 86400000), // Pianifica per domani
-      status: 'scheduled'
+      status: 'scheduled',
+      type: suggestion.type, // Aggiunto il tipo dal suggerimento
     };
-    setPosts([...posts, newPost]);
+    setPosts(prevPosts => [...prevPosts, newPost]);
+    // Potresti voler rimuovere il suggerimento dalla lista dopo averlo pianificato
+    setSuggestions(prevSuggestions => prevSuggestions.filter(s => s.id !== suggestion.id));
+  };
+
+  const handlePlatformChange = (event: any) => {
+    const { target: { value } } = event;
+    setSelectedPlatforms(
+      typeof value === 'string' ? value.split(',') : value,
+    );
   };
 
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}> {/* Ridotto gap se troppo spazio */}
           <AutoFixHighIcon color="primary" />
           {t('socialMediaManager.title', 'Social Media AI Manager')}
         </Typography>
@@ -205,19 +212,18 @@ const SocialMediaManager = () => {
           startIcon={<MonetizationOnIcon />}
           onClick={() => setShowPlansDialog(true)}
         >
-          Piani Premium
+          {t('socialMediaManager.premiumPlans', 'Piani Premium')}
         </Button>
       </Box>
 
       <Paper sx={{ mb: 4 }}>
-        <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} variant="fullWidth">
+        <Tabs value={activeTab} onChange={(_e, newValue) => setActiveTab(newValue)} variant="fullWidth">
           <Tab icon={<ContentPasteIcon />} label={t('socialMediaManager.tabs.content', 'Contenuti')} />
           <Tab icon={<ScheduleIcon />} label={t('socialMediaManager.tabs.schedule', 'Pianificazione')} />
           <Tab icon={<AnalyticsIcon />} label={t('socialMediaManager.tabs.analytics', 'Analytics')} />
         </Tabs>
       </Paper>
 
-      {/* Tab Contenuti */}
       {activeTab === 0 && (
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
@@ -231,7 +237,7 @@ const SocialMediaManager = () => {
                   <Select
                     multiple
                     value={selectedPlatforms}
-                    onChange={(e) => setSelectedPlatforms(typeof e.target.value === 'string' ? [e.target.value] : e.target.value)}
+                    onChange={handlePlatformChange}
                     renderValue={(selected) => (
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                         {selected.map((value) => (
@@ -240,18 +246,18 @@ const SocialMediaManager = () => {
                       </Box>
                     )}
                   >
-                    <MenuItem value="linkedin"><LinkedInIcon sx={{ mr: 1 }} /> LinkedIn</MenuItem>
-                    <MenuItem value="instagram"><InstagramIcon sx={{ mr: 1 }} /> Instagram</MenuItem>
-                    <MenuItem value="facebook"><FacebookIcon sx={{ mr: 1 }} /> Facebook</MenuItem>
-                    <MenuItem value="x"><XIcon sx={{ mr: 1 }} /> X</MenuItem>
-                    <MenuItem value="tiktok"><TikTokIcon sx={{ mr: 1 }} /> TikTok</MenuItem>
+                    <MenuItem value="linkedin"><ListItemIcon><LinkedInIcon /></ListItemIcon>LinkedIn</MenuItem>
+                    <MenuItem value="instagram"><ListItemIcon><InstagramIcon /></ListItemIcon>Instagram</MenuItem>
+                    <MenuItem value="facebook"><ListItemIcon><FacebookIcon /></ListItemIcon>Facebook</MenuItem>
+                    <MenuItem value="x"><ListItemIcon><XIcon /></ListItemIcon>X</MenuItem>
+                    <MenuItem value="tiktok"><ListItemIcon><TikTokIcon /></ListItemIcon>TikTok</MenuItem>
                   </Select>
                 </FormControl>
                 <Button
                   variant="contained"
                   fullWidth
                   onClick={generateContent}
-                  disabled={isGenerating}
+                  disabled={isGenerating || selectedPlatforms.length === 0}
                   startIcon={isGenerating ? <CircularProgress size={20} /> : <AutoFixHighIcon />}
                 >
                   {isGenerating
@@ -268,26 +274,32 @@ const SocialMediaManager = () => {
                 <Typography variant="h6" gutterBottom>
                   {t('socialMediaManager.suggestions', 'Suggerimenti AI')}
                 </Typography>
+                {suggestions.length === 0 && !isGenerating && (
+                    <Alert severity="info">{t('socialMediaManager.noSuggestions', 'Nessun suggerimento disponibile. Prova a generarne qualcuno!')}</Alert>
+                )}
                 <List>
                   {suggestions.map((suggestion) => (
-                    <ListItem key={suggestion.id}>
+                    <ListItem key={suggestion.id} divider>
                       <ListItemText
                         primary={suggestion.content}
                         secondary={
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5 }}>
                             <Chip
                               size="small"
                               label={`${Math.round(suggestion.confidence * 100)}% Confidence`}
-                              color={suggestion.confidence > 0.8 ? 'success' : 'warning'}
+                              color={suggestion.confidence > 0.8 ? 'success' : (suggestion.confidence > 0.6 ? 'warning' : 'error')}
                             />
                             <Chip size="small" label={suggestion.platform} />
+                            {suggestion.aiGenerated && <Chip size="small" label="AI Generated" variant="outlined" />}
                           </Box>
                         }
                       />
                       <ListItemSecondaryAction>
-                        <IconButton onClick={() => schedulePost(suggestion)}>
-                          <ScheduleIcon />
-                        </IconButton>
+                        <Tooltip title={t('socialMediaManager.schedulePostTooltip', 'Pianifica questo post')}>
+                          <IconButton onClick={() => schedulePost(suggestion)} edge="end">
+                            <ScheduleIcon />
+                          </IconButton>
+                        </Tooltip>
                       </ListItemSecondaryAction>
                     </ListItem>
                   ))}
@@ -298,7 +310,6 @@ const SocialMediaManager = () => {
         </Grid>
       )}
 
-      {/* Tab Pianificazione */}
       {activeTab === 1 && (
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -307,31 +318,39 @@ const SocialMediaManager = () => {
                 <Typography variant="h6" gutterBottom>
                   {t('socialMediaManager.scheduledPosts', 'Post Pianificati')}
                 </Typography>
+                {posts.length === 0 && (
+                    <Alert severity="info">{t('socialMediaManager.noScheduledPosts', 'Nessun post pianificato.')}</Alert>
+                )}
                 <List>
                   {posts.map((post) => (
-                    <ListItem key={post.id}>
+                    <ListItem key={post.id} divider>
                       <ListItemText
                         primary={post.content}
                         secondary={
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5 }}>
                             <Chip
                               size="small"
                               label={post.status}
-                              color={post.status === 'published' ? 'success' : 'default'}
+                              color={post.status === 'published' ? 'success' : (post.status === 'scheduled' ? 'primary' : 'default')}
                             />
                             <Typography variant="body2">
                               {new Date(post.scheduledTime).toLocaleString()}
                             </Typography>
+                            <Chip size="small" label={post.platform} />
                           </Box>
                         }
                       />
                       <ListItemSecondaryAction>
-                        <IconButton>
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton>
-                          <DeleteIcon />
-                        </IconButton>
+                        <Tooltip title={t('socialMediaManager.editPostTooltip', 'Modifica Post')}>
+                          <IconButton edge="end" aria-label="edit">
+                            <EditIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title={t('socialMediaManager.deletePostTooltip', 'Elimina Post')}>
+                          <IconButton edge="end" aria-label="delete">
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
                       </ListItemSecondaryAction>
                     </ListItem>
                   ))}
@@ -342,12 +361,11 @@ const SocialMediaManager = () => {
         </Grid>
       )}
 
-      {/* Tab Analytics */}
       {activeTab === 2 && (
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Alert severity="info" sx={{ mb: 3 }}>
-              {t('socialMediaManager.analyticsInfo', 'Le metriche vengono aggiornate automaticamente ogni ora')}
+              {t('socialMediaManager.analyticsInfo', 'Le metriche vengono aggiornate automaticamente ogni ora. Dati simulati.')}
             </Alert>
             <Grid container spacing={2}>
               {selectedPlatforms.map((platform) => (
@@ -360,19 +378,19 @@ const SocialMediaManager = () => {
                         {platform === 'facebook' && <FacebookIcon />}
                         {platform === 'x' && <XIcon />}
                         {platform === 'tiktok' && <TikTokIcon />}
-                        {platform}
+                        {platform.charAt(0).toUpperCase() + platform.slice(1)} {/* Capitalize platform name */}
                       </Typography>
                       <List dense>
                         <ListItem>
-                          <ListItemText primary="Engagement Rate" secondary="5.2%" />
-                          <LinearProgress variant="determinate" value={52} sx={{ width: 100 }} />
+                          <ListItemText primary={t('socialMediaManager.analytics.engagementRate', 'Engagement Rate')} secondary="5.2%" />
+                          <LinearProgress variant="determinate" value={52} sx={{ width: '50%', ml:1 }} />
                         </ListItem>
                         <ListItem>
-                          <ListItemText primary="Crescita Follower" secondary="+2.3%" />
+                          <ListItemText primary={t('socialMediaManager.analytics.followerGrowth', 'Crescita Follower')} secondary="+2.3%" />
                           <Chip size="small" color="success" label="+2.3%" />
                         </ListItem>
                         <ListItem>
-                          <ListItemText primary="Post Performance" secondary="Ottima" />
+                          <ListItemText primary={t('socialMediaManager.analytics.postPerformance', 'Post Performance')} secondary={t('socialMediaManager.analytics.excellent', 'Ottima')} />
                           <Chip size="small" color="success" label="A+" />
                         </ListItem>
                       </List>
@@ -385,80 +403,52 @@ const SocialMediaManager = () => {
         </Grid>
       )}
 
-      {/* Dialog Piani Premium */}
       <Dialog
         open={showPlansDialog}
         onClose={() => setShowPlansDialog(false)}
-        maxWidth="md"
-        fullWidth
+        aria-labelledby="subscription-plans-dialog-title"
       >
-        <DialogTitle>
-          <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <MonetizationOnIcon color="primary" />
-            Piani Premium
-          </Typography>
+        <DialogTitle id="subscription-plans-dialog-title">
+          {t('socialMediaManager.premiumPlansTitle', 'Scegli il Piano Willy AI Perfetto per Te')}
         </DialogTitle>
-        <DialogContent>
-          <Grid container spacing={3} sx={{ mt: 1 }}>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            {t('socialMediaManager.premiumPlansDescription', 'Potenzia la tua strategia social con le funzionalità avanzate dei nostri piani premium. Scegli quello più adatto alle tue esigenze e inizia a crescere!')}
+          </Typography>
+          <Grid container spacing={3} sx={{ mt: 2 }}>
             {subscriptionPlans.map((plan) => (
               <Grid item xs={12} md={4} key={plan.id}>
-                <Card
-                  sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    position: 'relative',
-                    border: plan.isPopular ? 2 : 1,
-                    borderColor: plan.isPopular ? 'primary.main' : 'divider'
-                  }}
-                >
-                  {plan.isPopular && (
-                    <Chip
-                      label="Più Popolare"
-                      color="primary"
-                      sx={{
-                        position: 'absolute',
-                        top: -12,
-                        right: 24,
-                        px: 1
-                      }}
-                    />
-                  )}
+                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', border: plan.isPopular ? '2px solid primary.main' : '1px solid #e0e0e0' }}>
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography variant="h5" gutterBottom>
+                    {plan.isPopular && (
+                      <Chip label={t('socialMediaManager.popularPlan', 'Più Popolare')} color="primary" sx={{ mb: 1 }} />
+                    )}
+                    <Typography variant="h5" component="div" gutterBottom>
                       {plan.name}
                     </Typography>
                     <Typography variant="h4" color="primary" gutterBottom>
-                      €{plan.price}
-                      <Typography variant="caption" color="text.secondary">/mese</Typography>
+                      ${plan.price}<Typography component="span" variant="subtitle1">/mese</Typography>
                     </Typography>
-                    <Divider sx={{ my: 2 }} />
                     <List dense>
                       {plan.features.map((feature, index) => (
-                        <ListItem key={index}>
+                        <ListItem key={index} sx={{ py: 0.5 }}>
                           <ListItemText primary={feature} />
                         </ListItem>
                       ))}
                     </List>
                   </CardContent>
-                  <Box sx={{ p: 2, pt: 0 }}>
-                    <Button
-                      variant={plan.isPopular ? "contained" : "outlined"}
-                      color="primary"
-                      fullWidth
-                    >
-                      Seleziona Piano
+                  <DialogActions sx={{ justifyContent: 'center', p:2 }}>
+                    <Button variant="contained" fullWidth>
+                      {t('socialMediaManager.choosePlan', 'Scegli Piano')}
                     </Button>
-                  </Box>
+                  </DialogActions>
                 </Card>
               </Grid>
             ))}
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowPlansDialog(false)}>
-            Chiudi
-          </Button>
+          <Button onClick={() => setShowPlansDialog(false)}>{t('common.close', 'Chiudi')}</Button>
         </DialogActions>
       </Dialog>
     </Box>
@@ -466,3 +456,4 @@ const SocialMediaManager = () => {
 };
 
 export default SocialMediaManager;
+

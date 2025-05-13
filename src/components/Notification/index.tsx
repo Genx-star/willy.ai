@@ -1,4 +1,3 @@
-import React from 'react';
 import { Alert, Snackbar } from '@mui/material';
 
 interface NotificationProps {
@@ -10,25 +9,30 @@ interface NotificationProps {
 }
 
 const Notification = ({ notification, onClose }: NotificationProps) => {
+  // Se non c'è nessuna notifica, non renderizzare lo Snackbar
+  if (!notification) {
+    return null;
+  }
+
+  // Se c'è una notifica, renderizza lo Snackbar con l'Alert come figlio
   return (
     <Snackbar
-      open={!!notification}
+      open={true} // open è true perché abbiamo già verificato che notification esista
       autoHideDuration={6000}
       onClose={onClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
     >
-      {notification && (
-        <Alert
-          onClose={onClose}
-          severity={notification.type}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {notification.message}
-        </Alert>
-      )}
+      <Alert
+        onClose={onClose}
+        severity={notification.type}
+        variant="filled"
+        sx={{ width: '100%' }}
+      >
+        {notification.message}
+      </Alert>
     </Snackbar>
   );
 };
 
 export default Notification;
+

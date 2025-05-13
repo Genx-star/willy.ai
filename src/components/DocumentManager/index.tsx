@@ -12,34 +12,24 @@ import {
   ListItemSecondaryAction,
   IconButton,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
   Tabs,
   Tab,
   Chip,
-  Alert,
   CircularProgress,
-  Divider,
   Tooltip
 } from '@mui/material';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import ImageIcon from '@mui/icons-material/Image';
-import DescriptionIcon from '@mui/icons-material/Description';
+// import ImageIcon from '@mui/icons-material/Image'; // TS6133 Rimosso
+// import DescriptionIcon from '@mui/icons-material/Description'; // TS6133 Rimosso
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+// import EditIcon from '@mui/icons-material/Edit'; // TS6133 Rimosso
 import UploadIcon from '@mui/icons-material/Upload';
 import DownloadIcon from '@mui/icons-material/Download';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
+// import ContentCopyIcon from '@mui/icons-material/ContentCopy'; // TS6133 Rimosso
+// import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove'; // TS6133 Rimosso
 import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
 
@@ -70,7 +60,7 @@ const DocumentManager = () => {
   const { t } = useTranslation();
   const [documents, setDocuments] = useState<Document[]>([]);
   const [activeTab, setActiveTab] = useState(0);
-  const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
+  // const [selectedDocument, setSelectedDocument] = useState<Document | null>(null); // TS6133 Rimosso (sia selectedDocument che setSelectedDocument)
   const [isUploading, setIsUploading] = useState(false);
   const [conversionJobs, setConversionJobs] = useState<ConversionJob[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -139,9 +129,11 @@ const DocumentManager = () => {
 
   // Aggiorna lo stato di un documento
   const updateDocumentStatus = (documentId: string, status: Document['status']) => {
-    setDocuments(documents.map(doc =>
-      doc.id === documentId ? { ...doc, status } : doc
-    ));
+    setDocuments(prevDocuments => // Corretto per usare prevDocuments per evitare dipendenza da documents esterno
+      prevDocuments.map(doc =>
+        doc.id === documentId ? { ...doc, status } : doc
+      )
+    );
   };
 
   // Avvia la conversione di un documento
@@ -153,7 +145,7 @@ const DocumentManager = () => {
       status: 'processing',
       progress: 0
     };
-    setConversionJobs([...conversionJobs, newJob]);
+    setConversionJobs(prevJobs => [...prevJobs, newJob]); // Corretto per usare prevJobs
 
     // Simula il processo di conversione
     simulateConversion(newJob.id);
@@ -186,7 +178,8 @@ const DocumentManager = () => {
       </Typography>
 
       <Paper sx={{ mb: 4 }}>
-        <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} variant="fullWidth">
+        {/* TS6133: 'e' is declared but its value is never read. Corretto con _e */}
+        <Tabs value={activeTab} onChange={(_e, newValue) => setActiveTab(newValue)} variant="fullWidth">
           <Tab icon={<FolderIcon />} label={t('documentManager.tabs.documents', 'Documenti')} />
           <Tab icon={<AutoFixHighIcon />} label={t('documentManager.tabs.processing', 'Elaborazione')} />
         </Tabs>
@@ -230,7 +223,7 @@ const DocumentManager = () => {
                   {categories.map((category) => (
                     <ListItem
                       key={category.id}
-                      button
+                      button // ListItem con prop "button" dovrebbe avere un handler onClick o simile
                       selected={selectedCategory === category.id}
                       onClick={() => setSelectedCategory(category.id)}
                     >
@@ -342,3 +335,4 @@ const DocumentManager = () => {
 };
 
 export default DocumentManager;
+

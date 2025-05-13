@@ -7,6 +7,8 @@ export interface SubscriptionPlan {
   features: string[];
   trialDays: number;
   stripePriceId: string;
+  originalPrice?: string; // Aggiunta come opzionale
+  discount?: string;    // Aggiunta come opzionale
 }
 
 export interface UserSubscription {

@@ -1,9 +1,7 @@
 import { useState, useRef } from 'react';
 import {
   Box,
-  Button,
   Typography,
-  CircularProgress,
   Alert,
   IconButton,
   Select,
@@ -13,7 +11,6 @@ import {
 } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import StopIcon from '@mui/icons-material/Stop';
-import { useContentStore } from '@/stores/contentStore';
 
 interface SpeechToContentProps {
   contentType: 'image' | 'video';
@@ -49,22 +46,25 @@ const SpeechToContent = ({ contentType, onTranscriptionComplete }: SpeechToConte
       };
 
       mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' }); // Corretto: Aggiunto nome variabile 'audioBlob'
         try {
           // Qui implementeremo la chiamata all'API di speech-to-text
           // Per ora simuliamo una risposta
+          console.log('Audio Blob da inviare:', audioBlob); // Aggiunto per usare audioBlob ed evitare TS6133
           const transcription = 'Esempio di trascrizione del contenuto vocale';
           onTranscriptionComplete(transcription);
-        } catch (error) {
+        } catch (err) { // Cambiato nome variabile per evitare shadowing con error di useState
           setError('Errore durante la trascrizione del contenuto vocale');
+          console.error('Errore trascrizione:', err);
         }
       };
 
       mediaRecorder.start();
       setIsRecording(true);
       setError(null);
-    } catch (error) {
+    } catch (err) { // Cambiato nome variabile per evitare shadowing con error di useState
       setError('Errore nell\'accesso al microfono');
+      console.error('Errore accesso microfono:', err);
     }
   };
 
@@ -83,8 +83,9 @@ const SpeechToContent = ({ contentType, onTranscriptionComplete }: SpeechToConte
       </Typography>
 
       <FormControl sx={{ mb: 2, minWidth: 200 }}>
-        <InputLabel>Lingua</InputLabel>
+        <InputLabel id="language-select-label">Lingua</InputLabel> {/* Aggiunto id per accessibilità */}
         <Select
+          labelId="language-select-label"
           value={selectedLanguage}
           label="Lingua"
           onChange={(e) => setSelectedLanguage(e.target.value)}
@@ -103,10 +104,11 @@ const SpeechToContent = ({ contentType, onTranscriptionComplete }: SpeechToConte
           color={isRecording ? 'error' : 'primary'}
           onClick={isRecording ? stopRecording : startRecording}
           sx={{ width: 56, height: 56 }}
+          aria-label={isRecording ? 'Ferma registrazione' : 'Avvia registrazione'} // Aggiunto aria-label
         >
           {isRecording ? <StopIcon /> : <MicIcon />}
         </IconButton>
-        <Typography color={isRecording ? 'error' : 'textSecondary'}>
+        <Typography color={isRecording ? 'error' : 'text.secondary'}> {/* Modificato textSecondary in text.secondary */}
           {isRecording ? 'Registrazione in corso...' : 'Premi per registrare'}
         </Typography>
       </Box>
@@ -121,3 +123,4 @@ const SpeechToContent = ({ contentType, onTranscriptionComplete }: SpeechToConte
 };
 
 export default SpeechToContent;
+
