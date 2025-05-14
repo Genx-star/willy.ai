@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://willy.ai/sitemap.xml
